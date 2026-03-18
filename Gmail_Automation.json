@@ -1,0 +1,71 @@
+{
+  "name": "Gmail_Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "55086db2-ac74-4374-9bcb-8bc12085173e",
+      "name": "When chat message received",
+      "webhookId": "a1ad30eb-2b94-4d42-8ffa-74ced1af3aeb"
+    },
+    {
+      "parameters": {
+        "sendTo": "minaadly3355@gmail.com",
+        "subject": "Hello world",
+        "emailType": "text",
+        "message": "=Hello ,  {{ $json.chatInput }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "fe90816d-a2fa-4d91-b133-6106dd34b2b9",
+      "name": "Send a message",
+      "webhookId": "2f0c67df-aaf4-4050-b864-33403dfc5e0c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "q5jfXOW4hwgntPiB",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Africa/Cairo",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "fdb5978c-1cee-4713-a128-d0f60cbc295c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4fea44de8b4edd2d6e49b6d073e09808425659a78ff23e2d53a659b24b656311"
+  },
+  "id": "wcYgxPdRL520t4Cl",
+  "tags": []
+}
