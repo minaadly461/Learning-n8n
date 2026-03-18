@@ -1,0 +1,139 @@
+{
+  "name": "Gmail_Automation_on_schedule",
+  "nodes": [
+    {
+      "parameters": {
+        "sendTo": "minaadly3355@gmail.com",
+        "subject": "Hello world",
+        "emailType": "text",
+        "message": "=the trigger is active at {{ $json['Readable date'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "fe90816d-a2fa-4d91-b133-6106dd34b2b9",
+      "name": "Send a message",
+      "webhookId": "2f0c67df-aaf4-4050-b864-33403dfc5e0c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "q5jfXOW4hwgntPiB",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1Xp9msQgOLc3Izo1LfI8Z4IFNAmNeh1FvTZ9r7Cr9L2U",
+          "mode": "list",
+          "cachedResultName": "test",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Xp9msQgOLc3Izo1LfI8Z4IFNAmNeh1FvTZ9r7Cr9L2U/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "الورقة1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Xp9msQgOLc3Izo1LfI8Z4IFNAmNeh1FvTZ9r7Cr9L2U/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message": "={{ $json['Readable date'] }}"
+          },
+          "matchingColumns": [
+            "message"
+          ],
+          "schema": [
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        144,
+        144
+      ],
+      "id": "53ed799c-5eb2-4f36-9d9a-9415fc60593c",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OZOFQllADWn5W3of",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -112,
+        48
+      ],
+      "id": "a2624e3e-e22a-466c-9a11-6f9c2cda8430",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Africa/Cairo",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "a132d1fe-c1ae-4f28-b60f-cae38bf37e6d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4fea44de8b4edd2d6e49b6d073e09808425659a78ff23e2d53a659b24b656311"
+  },
+  "id": "wcYgxPdRL520t4Cl",
+  "tags": []
+}
