@@ -1,0 +1,150 @@
+{
+  "name": "smart_car_Dealership",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "eed0009c-251d-4bb4-a8eb-eb2887dd040b",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "3ff0944e-8f00-4887-a66e-c1d3e80be849",
+      "name": "Webhook",
+      "webhookId": "eed0009c-251d-4bb4-a8eb-eb2887dd040b"
+    },
+    {
+      "parameters": {
+        "sendTo": "minaadly3355@gmail.com",
+        "subject": "Smart Car dealership",
+        "emailType": "text",
+        "message": "=A car has just been sold. Here is the details , \nname : {{ $json.body.buyer }}\ncar : {{ $json.body['price '] }}\nprice : {{ $json.body['price '] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        256,
+        -16
+      ],
+      "id": "5314af7d-57b7-4c90-a4d5-8fe81d59e2c2",
+      "name": "Send a message",
+      "webhookId": "50f832ce-ad72-4152-b7ee-e0a669c3e57e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "q5jfXOW4hwgntPiB",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1aKscjfJKxJKST4aKgegPc0ovpsjmlDuEynrY83r9f-E",
+          "mode": "list",
+          "cachedResultName": "Smart Car Dealer ship",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1aKscjfJKxJKST4aKgegPc0ovpsjmlDuEynrY83r9f-E/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "الورقة1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1aKscjfJKxJKST4aKgegPc0ovpsjmlDuEynrY83r9f-E/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            " car type": "={{ $json.body.car }}",
+            "name ": "={{ $json.body.buyer }}",
+            "price ": "={{ $json.body['price '] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "name ",
+              "displayName": "name ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "price ",
+              "displayName": "price ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": " car type",
+              "displayName": " car type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        288,
+        176
+      ],
+      "id": "265a836f-457f-4f26-94cc-703344bbbc27",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OZOFQllADWn5W3of",
+          "name": "Google Sheets account 3"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "314fa39c-dbe7-4c37-b603-51419d7b5e4e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4fea44de8b4edd2d6e49b6d073e09808425659a78ff23e2d53a659b24b656311"
+  },
+  "id": "RLA8Uw12OoMPLefH",
+  "tags": []
+}
