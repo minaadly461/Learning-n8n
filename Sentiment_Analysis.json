@@ -1,0 +1,226 @@
+{
+  "name": "Sentiment_Analysis",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Review",
+        "formDescription": "this form for providing you review ",
+        "formFields": {
+          "values": [
+            {
+              "fieldName": "name",
+              "fieldLabel": "Your Name ",
+              "placeholder": "EX:Mina ",
+              "requiredField": true
+            },
+            {
+              "fieldName": "Review",
+              "fieldLabel": "Your Review",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "61637418-ec76-4aa9-9d4c-4c47f901ab4e",
+      "name": "On form submission",
+      "webhookId": "cfcb5601-0f95-4e5b-8d22-d7ed64333dbb"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "2120dc15-8644-4d83-9afa-7eedc97d7213",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1zPnDb5pQV90ZbZsXb-EZ5p8VmSvl8DGCn1TAxsO_JhQ",
+          "mode": "list",
+          "cachedResultName": "sentiment_analysis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zPnDb5pQV90ZbZsXb-EZ5p8VmSvl8DGCn1TAxsO_JhQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "الورقة1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zPnDb5pQV90ZbZsXb-EZ5p8VmSvl8DGCn1TAxsO_JhQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "name": "={{ $('On form submission').item.json.name }}",
+            "review": "={{ $json.text.trim().split(/\\s+/).pop() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "review",
+              "displayName": "review",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        416,
+        0
+      ],
+      "id": "e2641b88-0538-43a1-a751-cb4bb71b0eee",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OZOFQllADWn5W3of",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.Review }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=This is the customer review: {{ $json.Review }}\nYou are an expert in sentiment analysis. When I give you a customer review, classify its overall sentiment and reply with exactly one word: \"Positive\", \"Negative\", or \"Neutral\".  Do not add any extra text or explanation—just the single label , to do not forget your answer must be in one word , again your answer must be in one word ."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.8,
+      "position": [
+        -16,
+        256
+      ],
+      "id": "2060901f-6f24-466a-9b5b-b6ddb992d1eb",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": "deepseek-r1:7b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        464
+      ],
+      "id": "42376c0b-e332-41cb-824d-d419c88bff8f",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "H4IkKqEIE9DKS2H4",
+          "name": "Ollama account 3"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        []
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "b5eb27a1-aa0a-4e5b-9ae4-afab7a77930f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4fea44de8b4edd2d6e49b6d073e09808425659a78ff23e2d53a659b24b656311"
+  },
+  "id": "BRGYn24pT55JoXfM",
+  "tags": []
+}
